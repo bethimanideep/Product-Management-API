@@ -1,9 +1,9 @@
 {
     "version": 2,
-    "name": "tacnique",
+    "name": "Product-Management-API",
     "builds": [
         {
-            "src": "./index.js",
+            "src": "./app.js",
             "use": "@vercel/node"
         }
     ],
