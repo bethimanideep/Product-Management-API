@@ -11,7 +11,7 @@ const options = {
         },
         servers: [
             {
-                url: "https://task-management-six-lyart.vercel.app",
+                url: "https://product-management-api-theta.vercel.app/",
                 description: "Deployed server",
             },
             {
