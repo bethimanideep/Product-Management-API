@@ -41,14 +41,22 @@ productRouter.get('/api/products/:id', async (req, res) => {
 productRouter.put('/api/products/:id', async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
+
+    // Update the uDate field to the current date and time
+    product.uDate = new Date();
+
+    await product.save();
+
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // Route to delete a product by ID
 productRouter.delete('/api/products/:id', async (req, res) => {
