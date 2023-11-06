@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info:
+  title: Product Management API
+  description: API documentation for managing products.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/products:
+    post:
+      summary: Add a new product
+      description: Add a new product to the system.
+      tags:
+        - Product Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the product.
+                price:
+                  type: number
+                  description: The price of the product.
+              example:
+                name: "Sample Product"
+                price: 10.99
+      responses:
+        '201':
+          description: Product created successfully.
+        '400':
+          description: Invalid or missing product data.
+        '500':
+          description: Internal server error.
+
+    get:
+      summary: Retrieve all products
+      description: Retrieve a list of all products in the system.
+      tags:
+        - Product Routes
+      responses:
+        '200':
+          description: List of products retrieved successfully.
+        '500':
+          description: Internal server error.
+
+  /api/products/{id}:
+    get:
+      summary: Retrieve a product by ID
+      description: Retrieve a product by its unique ID.
+      tags:
+        - Product Routes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The unique ID of the product to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product retrieved successfully.
+        '404':
+          description: Product not found.
+        '500':
+          description: Internal server error.
+
+    put:
+      summary: Update a product by ID
+      description: Update a product by its unique ID.
+      tags:
+        - Product Routes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The unique ID of the product to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The updated name of the product.
+                price:
+                  type: number
+                  description: The updated price of the product.
+              example:
+                name: "Updated Product"
+                price: 15.99
+      responses:
+        '200':
+          description: Product updated successfully.
+        '400':
+          description: Invalid or missing product data.
+        '404':
+          description: Product not found.
+        '500':
+          description: Internal server error.
+
+    delete:
+      summary: Delete a product by ID
+      description: Delete a product by its unique ID.
+      tags:
+        - Product Routes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The unique ID of the product to delete.
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Product deleted successfully.
+        '404':
+          description: Product not found.
+        '500':
+          description: Internal server error.
+
+  /api/products/{productId}/reviews:
+    post:
+      summary: Add a review for a product
+      description: Add a review for a product.
+      tags:
+        - Review Routes
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the product to add a review to.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: The ID of the user submitting the review.
+                description:
+                  type: string
+                  description: The description of the review.
+              example:
+                userId: "user123"
+                description: "Great product, highly recommended!"
+      responses:
+        '201':
+          description: Review added successfully.
+        '400':
+          description: Invalid or missing review data or product not found.
+        '500':
+          description: Internal server error.
+    /api/products/{productId}/reviews:
+    get:
+      summary: Get all reviews for a product
+      description: Get all reviews for a product.
+      tags:
+        - Review Routes
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the product to retrieve reviews for.
+      responses:
+        '200':
+          description: List of reviews retrieved successfully.
+        '404':
+          description: Product not found.
+        '500':
+          description: Internal server error.
+
+  /api/products/{productId}/reviews/{reviewId}:
+    delete:
+      summary: Delete a review for a product
+      description: Delete a review for a product.
+      tags:
+        - Review Routes
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the product to delete a review from.
+        - in: path
+          name: reviewId
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the review to delete.
+      responses:
+        '202':
+          description: Review deleted successfully.
+        '404':
+          description: Product or review not found.
+        '500':
+          description: Internal server error.
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
